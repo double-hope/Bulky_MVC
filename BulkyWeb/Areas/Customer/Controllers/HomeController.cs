@@ -1,7 +1,9 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BulkyWeb.Areas.Customer.Controllers
 {
@@ -25,8 +27,39 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            Product product = unitOfWork.Product.GetFirstOrDefault(u => u.Id == productId, includeProperties: "Category");
-            return View(product);
+            ShoppingCard shoppingCard = new()
+            {
+                ProductId = productId,
+                Product = unitOfWork.Product.GetFirstOrDefault(u => u.Id == productId, includeProperties: "Category"),
+                Count = 1
+            };
+            
+            return View(shoppingCard);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCard shoppingCard)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCard.ApplicationUserId = userId;
+
+            ShoppingCard cardFromDb = unitOfWork.ShoppingCard.GetFirstOrDefault(u => u.ApplicationUserId == userId && u.ProductId == shoppingCard.ProductId);
+
+            if (cardFromDb != null)
+            {
+                cardFromDb.Count += shoppingCard.Count;
+                unitOfWork.ShoppingCard.Update(cardFromDb);
+            }else
+            {
+                unitOfWork.ShoppingCard.Add(shoppingCard);
+            }
+
+            TempData["success"] = "Card updated succesfully";
+            unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

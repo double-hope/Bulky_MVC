@@ -38,6 +38,11 @@
                 </select>
             </div>
             <div class="form-floating mb-3">
+                <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select">
+                    <option disabled selected>-Select Company-</option>
+                </select>
+            </div>
+            <div class="form-floating mb-3">
                 <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" placeholder="Yanhelya" />
                 <label asp-for="Input.StreetAddress">Street Address</label>
                 <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
@@ -99,4 +104,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(() => {
+            $('#Input_Role').change(() => {
+                const selection = $('#Input_Role Option:Selected').text();
+                if(selection == 'Company') {
+                    $('#Input_CompanyId').show();
+                }
+                else {
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
 }
