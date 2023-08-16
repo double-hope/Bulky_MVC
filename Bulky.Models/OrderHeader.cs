@@ -13,7 +13,7 @@ namespace Bulky.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public DateTime OrderDate { get; set; }
-        public DateTime ShoppingDate { get; set; }
+        public DateTime ShippingDate { get; set; }
         public double OrderTotal { get; set; }
 
         public string? OrderStatus { get; set; }
@@ -22,7 +22,7 @@ namespace Bulky.Models
         public string? Carrier { get; set; }
 
         public DateTime PaymentDate { get; set; }   
-        public DateOnly PaumentDueDate { get; set; }
+        public DateOnly PaymentDueDate { get; set; }
 
         public string? SessionId { get; set; }
         public string? PaymentIntentId { get; set; }
