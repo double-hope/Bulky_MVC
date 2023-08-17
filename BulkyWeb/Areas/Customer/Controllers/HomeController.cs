@@ -1,5 +1,6 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -21,7 +22,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = unitOfWork.Product.GetAll(includeProperties: "Category");
+			IEnumerable<Product> products = unitOfWork.Product.GetAll(includeProperties: "Category");
             return View(products);
         }
 
@@ -51,13 +52,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 cardFromDb.Count += shoppingCard.Count;
                 unitOfWork.ShoppingCard.Update(cardFromDb);
-            }else
+				unitOfWork.Save();
+			}
+			else
             {
                 unitOfWork.ShoppingCard.Add(shoppingCard);
+				unitOfWork.Save();
+				HttpContext.Session.SetInt32(SD.SessionCart, unitOfWork.ShoppingCard.GetAll(u => u.ApplicationUserId == userId).Count());
             }
 
             TempData["success"] = "Card updated succesfully";
-            unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));
         }
