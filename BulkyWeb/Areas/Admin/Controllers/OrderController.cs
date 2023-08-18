@@ -212,7 +212,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
 				var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 				orderHeaders = unitOfWork.OrderHeader
-					.GetAll(x => x.ApplicationUserId.Equals("17862997-f656-4325-953a-5011690e05e8"), includeProperties: "ApplicationUser");
+					.GetAll(x => x.ApplicationUserId.Equals(userId), includeProperties: "ApplicationUser");
 			}
 
 			switch (status)

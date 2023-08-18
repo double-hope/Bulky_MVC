@@ -1,0 +1,52 @@
+﻿@model UserVM
+
+<div class="row">
+	<div class="col-md-4">
+		<form id="manageUserRoleForm" method="post">
+			<input asp-for="Id" hidden />
+			<h2>Manage User Role</h2>
+			<hr />
+			<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+			<div class="form-floating mb-3">
+				<input asp-for="Name" class="form-control" aria-required="true" placeholder="Katya" />
+				<label asp-for="Name">Name</label>
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-floating mb-3">
+				<select asp-for="Role" asp-items="@Model.RoleList" class="form-select">
+					<option disabled selected>-Select Role-</option>
+				</select>
+			</div>
+			<div class="form-floating mb-3">
+				<select asp-for="CompanyId" asp-items="@Model.CompanyList" class="form-select">
+					<option disabled selected>-Select Company-</option>
+				</select>
+			</div>
+			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		$(document).ready(() => {
+			if ($('#Role Option:Selected').text() == 'Company') {
+					$('#CompanyId').show();
+				}
+				else {
+					$('#CompanyId').hide();
+				}
+
+			$('#Role').change(() => {
+				const selection = $('#Role Option:Selected').text();
+				if (selection == 'Company') {
+					$('#CompanyId').show();
+				}
+				else {
+					$('#CompanyId').hide();
+				}
+			});
+		});
+	</script>
+}
