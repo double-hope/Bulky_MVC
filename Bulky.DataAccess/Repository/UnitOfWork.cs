@@ -8,6 +8,7 @@ namespace Bulky.DataAccess.Repository
 		private readonly ApplicationDbContext db;
 		public ICategoryRepository Category { get; private set; }
 		public IProductRepository Product { get; private set; }
+		public IProductImageRepository ProductImage { get; private set; }
 		public ICompanyRepository Company { get; private set; }
 		public IShoppingCardRepository ShoppingCard { get; private set; }
 		public IApplicationUserRepository User { get; private set; }
@@ -18,6 +19,7 @@ namespace Bulky.DataAccess.Repository
 			this.db = db;
 			Category = new CategoryRepository(db);
 			Product = new ProductRepository(db);
+			ProductImage = new ProductImageRepository(db);
 			Company = new CompanyRepository(db);
 			ShoppingCard = new ShoppingCardRepository(db);
 			User = new ApplicationUserRepository(db);

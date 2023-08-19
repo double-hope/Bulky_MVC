@@ -4,6 +4,7 @@
 	{
 		ICategoryRepository Category { get; }
 		IProductRepository Product { get; }
+		IProductImageRepository ProductImage { get; }
 		ICompanyRepository Company { get; }
         IShoppingCardRepository ShoppingCard { get; }
         IApplicationUserRepository User { get; }

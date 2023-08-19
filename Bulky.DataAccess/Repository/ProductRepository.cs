@@ -23,10 +23,7 @@ namespace Bulky.DataAccess.Repository
 				productFromDb.Price100 = product.Price100;
 				productFromDb.ListPrice = product.ListPrice;
 				productFromDb.CategoryId = product.CategoryId;
-				if(product.ImageUrl != null)
-				{
-					productFromDb.ImageUrl = product.ImageUrl;
-				}
+				productFromDb.ProductImages = product.ProductImages;
 			}
 		}
 	}
